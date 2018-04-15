@@ -1,3 +1,39 @@
+// Additional layout characters
+
+var LayoutElement = function(x, y, sprite) {
+    this.x = x;
+    this.y = y;
+    this.sprite = sprite;
+}
+
+var elements = [];
+
+function createElements() {
+    
+    var doorSmall, boxFirst, boxSecond, boxThird, boxFourth, doorLockedT, doorLockedB, cloud1, cloud2, bush1, bush2, signRight, star;
+    
+    doorSmall = new LayoutElement(210, 12, 'images/doorOpenSmall.png');
+    boxFirst = new LayoutElement(0, 70, 'images/boxBlock.png');
+    boxSecond = new LayoutElement(70, 70, 'images/boxBlock.png');
+    boxThird = new LayoutElement(140, 70, 'images/boxBlock.png');
+    boxFourth = new LayoutElement(210, 70, 'images/boxBlock.png');
+    doorLockedT = new LayoutElement(630, 140, 'images/doorLockedTop.png');
+    doorLockedB = new LayoutElement(630, 210, 'images/doorLockedBottom.png');
+    cloud1 = new LayoutElement(540, 20, 'images/cloud1.png');
+    cloud2 = new LayoutElement(350, 100, 'images/cloud2.png');
+    bush1 = new LayoutElement(100, 210, 'images/bush.png');
+    bush2 = new LayoutElement(450, 210, 'images/bush.png');
+    signRight = new LayoutElement(520, 210, 'images/signRight.png');
+    star = new LayoutElement(0, 0, 'images/star.png');
+
+    elements.push(doorSmall, boxFirst, boxSecond, boxThird, boxFourth, doorLockedT, doorLockedB, cloud1, cloud2, bush1, bush2, signRight, star);
+
+};
+createElements();
+
+LayoutElement.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,

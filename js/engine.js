@@ -28,6 +28,8 @@ var Engine = (function(global) {
     canvas.height = 630;
     doc.body.appendChild(canvas);
 
+    //doorSmall = new LayoutElement(210, 12, 'images/doorOpenSmall.png');
+   
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -145,25 +147,16 @@ var Engine = (function(global) {
                 
             }
         }
-
-        // testing the layout
-        ctx.drawImage(Resources.get('images/doorOpenSmall.png'), 210, 12);
-        ctx.drawImage(Resources.get('images/boxBlock.png'), 0, 70);
-        ctx.drawImage(Resources.get('images/boxBlock.png'), 70, 70);
-        ctx.drawImage(Resources.get('images/boxBlock.png'), 140, 70);
-        ctx.drawImage(Resources.get('images/boxBlock.png'), 210, 70);
-        ctx.drawImage(Resources.get('images/doorLockedTop.png'), 630, 140);
-        ctx.drawImage(Resources.get('images/doorLockedBottom.png'), 630, 210);
-        ctx.drawImage(Resources.get('images/cloud1.png'), 540, 20);
-        ctx.drawImage(Resources.get('images/cloud2.png'), 350, 100);
-        ctx.drawImage(Resources.get('images/bush.png'), 100, 210);
-        ctx.drawImage(Resources.get('images/bush.png'), 450, 210);
-        ctx.drawImage(Resources.get('images/signRight.png'), 520, 210);
-        ctx.drawImage(Resources.get('images/star.png'), 0, 0);
-
+       
         //renderEntities();
+        renderElements();
     }
 
+    function renderElements() {
+        elements.forEach(function(el) {
+            el.render();
+        });
+    } 
     /* This function is called by the render function and is called on each game
      * tick. Its purpose is to then call the render functions you have defined
      * on your enemy and player entities within app.js
