@@ -1,4 +1,8 @@
-// Additional layout characters
+// Array to store elements that needs to be rendered (enemies, player and additional layout elements)
+
+var entities = [];
+
+// Additional layout elements
 
 var LayoutElement = function(x, y, sprite) {
     this.x = x;
@@ -6,9 +10,7 @@ var LayoutElement = function(x, y, sprite) {
     this.sprite = sprite;
 }
 
-var elements = [];
-
-function createElements() {
+var createElements = (function() {
     
     var doorSmall, boxFirst, boxSecond, boxThird, boxFourth, doorLockedT, doorLockedB, cloud1, cloud2, bush1, bush2, signRight, star;
     
@@ -26,23 +28,43 @@ function createElements() {
     signRight = new LayoutElement(520, 210, 'images/signRight.png');
     star = new LayoutElement(0, 0, 'images/star.png');
 
-    elements.push(doorSmall, boxFirst, boxSecond, boxThird, boxFourth, doorLockedT, doorLockedB, cloud1, cloud2, bush1, bush2, signRight, star);
-
-};
-createElements();
+    entities.push(doorSmall, boxFirst, boxSecond, boxThird, boxFourth, doorLockedT, doorLockedB, cloud1, cloud2, bush1, bush2, signRight, star);
+})();
 
 LayoutElement.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-// Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-};
+// Enemies our player must avoid
+
+var Enemy = function(x, y) {
+    this.x = x;
+    this.y = y;
+    this.sprite = 'images/ghost.png';
+}; 
+
+// Setting inheritance chain to inherit the render method
+
+Enemy.prototype = Object.create(LayoutElement.prototype);
+
+var createEnemies = function() {
+    var ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10;
+
+    ghost1 = new Enemy(10, 500);
+    ghost2 = new Enemy(200, 500);
+    ghost3 = new Enemy(630, 500);
+    ghost4 = new Enemy(220, 430);
+    ghost5 = new Enemy(420, 430);
+    ghost6 = new Enemy(100, 370);
+    ghost7 = new Enemy(250, 370);
+    ghost8 = new Enemy(580, 300);
+    ghost9 = new Enemy(320, 300);
+    ghost10 = new Enemy(420, 300);
+
+    entities.push(ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10);
+}
+
+createEnemies();
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -53,9 +75,11 @@ Enemy.prototype.update = function(dt) {
 };
 
 // Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+
+//Enemy.prototype.render = function() {
+    
+    //ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+//};
 
 // Now write your own player class
 // This class requires an update(), render() and

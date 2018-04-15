@@ -114,12 +114,13 @@ var Engine = (function(global) {
                 'images/skyBlock.png',     //row 3 of 4 of sky
                 'images/skyBlock.png',     //row 4 of 4 of sky
                 'images/grassBlock.png',   //row of grass 
-                'images/groundBlock.png',  //row 1 of 3 of ground
-                'images/groundBlock.png',  //row 2 of 3 of ground
-                'images/groundBlock.png',  //row 3 of 3 of ground
+                'images/groundBlock.png',  //row 1 of 4 of ground
+                'images/groundBlock.png',  //row 2 of 4 of ground
+                'images/groundBlock.png',  //row 3 of 4 of ground
+                'images/groundBlock.png',  //row 4 of 4 of ground
                 'images/bottomBlock.png'   //bottom row
             ],
-            numRows = 9,
+            numRows = 10,
             numCols = 10,
             row, col;
         
@@ -142,18 +143,18 @@ var Engine = (function(global) {
                 if (row != numRows - 1) {
                     ctx.drawImage(Resources.get(rowImages[row]), col * 70, row * 70);
                 } else {
-                    ctx.drawImage(Resources.get(rowImages[row]), col * 70, row * 70 - 6);
+                    ctx.drawImage(Resources.get(rowImages[row]), col * 70, (row - 1) * 70);
                 }
                 
             }
         }
-       
-        //renderEntities();
-        renderElements();
+
+        renderEntities();
     }
 
-    function renderElements() {
-        elements.forEach(function(el) {
+    function renderEntities() {
+        
+        entities.forEach(function(el) {
             el.render();
         });
     } 
@@ -199,7 +200,7 @@ var Engine = (function(global) {
         'images/bush.png',
         'images/signRight.png',
         'images/star.png',
-
+        'images/ghost.png'
     ]);
     Resources.onReady(init);
 
