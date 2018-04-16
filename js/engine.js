@@ -53,21 +53,20 @@ var Engine = (function(global) {
             yDiff = enemy.y - player.y;
             xDiff = player.x - enemy.x;
             
-                if (yDiff > 0 && yDiff < 50) {
+            if (yDiff > 0 && yDiff < 50) {
 
-                    // enemies coming from left side
-                    if (player.x > enemy.x && xDiff < 35) {
-                        player.x = playerStartX
-                        player.y = playerStartY; 
+                // enemies coming from left side
+                if (player.x > enemy.x && xDiff < 35) {
+                    player.x = playerStartX
+                    player.y = playerStartY; 
 
-                    // enemies coming from right side
-                    } else if (player.x < enemy.x && Math.abs(xDiff) < 65) {
-                        player.x = playerStartX;
-                        player.y = playerStartY;
-                    }
+                // enemies coming from right side
+                } else if (player.x < enemy.x && Math.abs(xDiff) < 55) {
+                    player.x = playerStartX;
+                    player.y = playerStartY;
                 }
+            }
         });
-    
     } 
 
     // Update the moves of enemies and player
@@ -76,6 +75,7 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+        collectExtras();
     }
 
     // Draw the game elements on the canvas
@@ -107,17 +107,17 @@ var Engine = (function(global) {
 
                 // For all the rows except last one
                 if (row != numRows - 1) {
-                    ctx.drawImage(Resources.get(rowImages[row]), col * 70, row * 70);
+                    ctx.drawImage(Resources.get(rowImages[row]), col * columnWidth, row * rowHeight);
 
                 // For the last row (for layout improvment)    
                 } else {
-                    ctx.drawImage(Resources.get(rowImages[row]), col * 70, (row - 1) * 70);
+                    ctx.drawImage(Resources.get(rowImages[row]), col * columnWidth, (row - 1) * rowHeight);
                 }
             }
         }
 
         // Draw the layout, additional elements
-        ctx.drawImage(Resources.get('images/doorOpenSmall.png'), 210, 12);
+        ctx.drawImage(Resources.get('images/doorOpenSmall.png'), 210, 10);
         ctx.drawImage(Resources.get('images/boxBlock.png'), 0, 70);
         ctx.drawImage(Resources.get('images/boxBlock.png'), 70, 70);
         ctx.drawImage(Resources.get('images/boxBlock.png'), 140, 70);
@@ -131,15 +131,21 @@ var Engine = (function(global) {
         ctx.drawImage(Resources.get('images/signRight.png'), 520, 210);
         ctx.drawImage(Resources.get('images/star.png'), 0, 0);
 
+        // Render characters
         renderEntities();
     }
 
     // Render enemies and player
     function renderEntities() {
 
-        //Loop through all of the objects within the allEnemies array render enemies
+        // Loop through all of the objects within the allEnemies array render enemies
         allEnemies.forEach(function(enemy) {
             enemy.render();
+        });
+
+        // Render all gems
+        allGems.forEach(function(gem) {
+            gem.render();
         });
 
         player.render();
@@ -179,6 +185,8 @@ var Engine = (function(global) {
         'images/player3.png',
         'images/player4.png',
         'images/player5.png',
+        'images/gem.png',
+        'images/key.png'
     ]);
     Resources.onReady(init);
 

@@ -1,7 +1,14 @@
-var allEnemies, player, playerStartX, playerStartY;
+var allEnemies, player, playerStartX, playerStartY, columnWidth, rowHeight, canvasWidth, gems, key;
 
-playerStartX = 350;
+allEnemies = [];
+allGems = [];
+playerStartX = 358;
 playerStartY = 560;
+gems = 0;
+key = 0;
+columnWidth = 70;
+rowHeight = 70;
+canvasWidth = 700;
 
 // ENEMIES
 
@@ -12,9 +19,6 @@ var Enemy = function(x, y, speed, sprite) {
     this.speed = speed;
     this.sprite = 'images/ghost' + sprite + '.png';
 }; 
-
-// Array to store enemies
-allEnemies = [];
 
 // Function to create all enemies and push them to array with entites, which will be rendered, it can be invoked right at the begining of the game
 var createEnemies = (function() {
@@ -44,8 +48,8 @@ Enemy.prototype.update = function(dt) {
 
         // When enemy goes off the canvas, bring it back on the other side
         if (this.x <= - 50) {
-            this.x = 750;
-        } else if (this.x >= 750) {
+            this.x = canvasWidth + 50;
+        } else if (this.x >= canvasWidth + 50) {
             this.x = -50;
         }
 
@@ -58,18 +62,18 @@ Enemy.prototype.update = function(dt) {
         // Doesn't allow the player to go off canvas
         if (this.x <= 0) {
             this.x = 0;
-        } else if (this.x >= 700) {
-            this.x = 700;
+        } else if (this.x >= 10 * columnWidth) {
+            this.x = 10 * columnWidth;
         } 
-        if (this.y <= 198) {
-            this.y = 198;
-        } else if (this.y >= 560) {
-            this.y = 560;
+        if (this.y <= 3 * rowHeight) {
+            this.y = 3 * rowHeight;
+        } else if (this.y >= 8 * rowHeight) {
+            this.y = 8 * rowHeight;
         }
     }
 };
 
-// Draw the enemy on the screen
+// Draw the enemy on the canvas
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -104,13 +108,13 @@ createPlayers();
 // Move the player after listening to keyboar event
 Player.prototype.handleInput = function(dir) {
     if (dir == "left") {
-        this.move[0] = 70;
+        this.move[0] = columnWidth;
     } else if (dir == "right") {
-        this.move[0] = -70;
+        this.move[0] = -columnWidth;
     } else if (dir == "up") {
-        this.move[1] = 70;
+        this.move[1] = rowHeight;
     } else if (dir == "down") {
-        this.move[1] = -70;
+        this.move[1] = -rowHeight;
     } 
 };
 
@@ -125,3 +129,46 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+var ExtraItem = function () {
+    this.x = columnWidth * Math.floor(Math.random() * 10) + 10;
+    this.y = rowHeight * (Math.floor(Math.random() * 4) + 4) + 25;
+    this.sprite = 'images/gem.png';
+}
+
+// Setting inheritance chain to inherit the render method from Enemy
+ExtraItem.prototype = Object.create(Enemy.prototype);
+
+// Method to collect extras and remove them from board items
+ExtraItem.prototype.remove = function() {
+  
+    this.y = 1000;
+}
+
+
+function collectExtras() {
+   
+    allGems.forEach(function(item) {
+
+        if (Math.abs(player.y - item.y) < 30 && Math.abs(player.x - item.x) < 30) {
+            item.remove();
+            gems +=1;
+        }
+    });
+}
+
+var createExtraItems = function() {
+    var gem1, gem2, gem3, gem4, gem5, gem6, doorKey;
+
+    gem1 = new ExtraItem;
+    gem2 = new ExtraItem;
+    gem3 = new ExtraItem;
+    gem4 = new ExtraItem;
+    gem5 = new ExtraItem;
+    gem6 = new ExtraItem;
+    doorKey = new ExtraItem;
+    doorKey.sprite = 'images/key.png';
+
+    allGems.push(gem1, gem2, gem3, gem4, gem5, gem6);
+}
+createExtraItems();
