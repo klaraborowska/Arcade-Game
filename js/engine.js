@@ -11,7 +11,7 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    canvas.width = 700;
+    canvas.width = 770;
     canvas.height = 630;
     doc.body.appendChild(canvas);
    
@@ -55,13 +55,7 @@ var Engine = (function(global) {
         // //checkCollisions();
     }
 
-    /* This is called by the update function and loops through all of the
-     * objects within your allEnemies array as defined in app.js and calls
-     * their update() methods. It will then call the update function for your
-     * player object. These update methods should focus purely on updating
-     * the data/properties related to the object. Do your drawing in your
-     * render methods.
-     */
+    // Update the moves of enemies and player
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
@@ -69,12 +63,7 @@ var Engine = (function(global) {
         player.update();
     }
 
-    /* This function initially draws the "game level", it will then call
-     * the renderEntities function. Remember, this function is called every
-     * game tick (or loop of the game engine) because that's how games work -
-     * they are flipbooks creating the illusion of animation but in reality
-     * they are just drawing the entire screen over and over.
-     */
+    // Draw the game elements on the canvas
     function render() {
 
         // Array with relative URL to the image used for the particular row of the game level
@@ -91,7 +80,7 @@ var Engine = (function(global) {
                 'images/bottomBlock.png'   //bottom row
             ],
             numRows = 10,
-            numCols = 10,
+            numCols = 11,
             row, col;
         
         // Before drawing, clear existing canvas
@@ -118,8 +107,8 @@ var Engine = (function(global) {
         ctx.drawImage(Resources.get('images/boxBlock.png'), 70, 70);
         ctx.drawImage(Resources.get('images/boxBlock.png'), 140, 70);
         ctx.drawImage(Resources.get('images/boxBlock.png'), 210, 70);
-        ctx.drawImage(Resources.get('images/doorLockedTop.png'), 630, 140);
-        ctx.drawImage(Resources.get('images/doorLockedBottom.png'), 630, 210);
+        ctx.drawImage(Resources.get('images/doorLockedTop.png'), 690, 140);
+        ctx.drawImage(Resources.get('images/doorLockedBottom.png'), 690, 210);
         ctx.drawImage(Resources.get('images/cloud1.png'), 540, 20);
         ctx.drawImage(Resources.get('images/cloud2.png'), 350, 100);
         ctx.drawImage(Resources.get('images/bush.png'), 100, 210);

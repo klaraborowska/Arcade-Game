@@ -1,6 +1,7 @@
-var allEnemies, player, move;
-move = [0, 0];
-// Enemies
+var allEnemies, player;
+//move = [0, 0];
+
+// ENEMIES
 
 // Function constructor for enemy
 var Enemy = function(x, y, speed) {
@@ -13,8 +14,8 @@ var Enemy = function(x, y, speed) {
 // Array to store enemies
 allEnemies = [];
 
-// Function to create all enemies and push them to array with entites, which will be rendered
-var createEnemies = function() {
+// Function to create all enemies and push them to array with entites, which will be rendered, it can be invoked right at the begining of the game
+var createEnemies = (function() {
     var ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10;
 
     ghost1 = new Enemy(10, 500, 200);
@@ -26,31 +27,39 @@ var createEnemies = function() {
     ghost7 = new Enemy(250, 370, 165);
     ghost8 = new Enemy(580, 300, -85);
     ghost9 = new Enemy(320, 300, -40);
-    ghost10 = new Enemy(420, 300, -95);
+    ghost10 = new Enemy(20, 300, -95);
 
     allEnemies.push(ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10);
-}
-createEnemies();
+})();
 
-// Update the enemy's position, required method for game
+// Update the element position, the method will be used also to update player position
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
+
+    // For enemy
     if(this.speed) {
         this.x += this.speed * dt;
+
+        // When enemy goes off the canvas, bring it back on the other side
         if (this.x <= - 50) {
             this.x = 750;
         } else if (this.x >= 750) {
             this.x = -50;
         }
+
+    // For player
     } else {
-        this.x -= move[0];
-        this.y -= move[1];
+        this.x -= this.move[0];
+        this.y -= this.move[1];
+        this.move = [0, 0];
+
+        // Doesn't allow the player to go off canvas
         if (this.x <= 0) {
             this.x = 0;
-        } else if (this.x >= 630) {
-            this.x = 630;
-        }
-        if (this.y > 70 && this.y <= 198) {
+        } else if (this.x >= 700) {
+            this.x = 700;
+        } 
+        if (this.y <= 198) {
             this.y = 198;
         } else if (this.y >= 540) {
             this.y = 540;
@@ -63,17 +72,13 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-
-// Now write your own player class
-// This class requires an update() and
-// a handleInput() method.
-
-// Player
+// PLAYERS
 
 // Function constructor for player
 var Player = function(sprite) {
-    this.x = 317;
+    this.x = 350;
     this.y = 540;
+    this.move = [0, 0];
     this.sprite = sprite;
 }; 
 
@@ -94,9 +99,20 @@ var createPlayers = function() {
 };
 createPlayers();
 
+// Move the player after listening to keyboar event
+Player.prototype.handleInput = function(dir) {
+    if (dir == "left") {
+        this.move[0] = 70;
+    } else if (dir == "right") {
+        this.move[0] = -70;
+    } else if (dir == "up") {
+        this.move[1] = 70;
+    } else if (dir == "down") {
+        this.move[1] = -70;
+    } 
+};
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// Listen for key presses and sends the keys to handleInput function 
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
