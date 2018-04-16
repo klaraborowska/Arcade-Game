@@ -1,11 +1,12 @@
-var allEnemies, player;
-
+var allEnemies, player, move;
+move = [0, 0];
 // Enemies
 
 // Function constructor for enemy
-var Enemy = function(x, y) {
+var Enemy = function(x, y, speed) {
     this.x = x;
     this.y = y;
+    this.speed = speed;
     this.sprite = 'images/ghost.png';
 }; 
 
@@ -16,16 +17,16 @@ allEnemies = [];
 var createEnemies = function() {
     var ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10;
 
-    ghost1 = new Enemy(10, 500);
-    ghost2 = new Enemy(200, 500);
-    ghost3 = new Enemy(630, 500);
-    ghost4 = new Enemy(220, 430);
-    ghost5 = new Enemy(420, 430);
-    ghost6 = new Enemy(100, 370);
-    ghost7 = new Enemy(250, 370);
-    ghost8 = new Enemy(580, 300);
-    ghost9 = new Enemy(320, 300);
-    ghost10 = new Enemy(420, 300);
+    ghost1 = new Enemy(10, 500, 200);
+    ghost2 = new Enemy(200, 500, 80);
+    ghost3 = new Enemy(630, 500, 40);
+    ghost4 = new Enemy(220, 430, -100);
+    ghost5 = new Enemy(420, 430, -200);
+    ghost6 = new Enemy(100, 370, 85);
+    ghost7 = new Enemy(250, 370, 165);
+    ghost8 = new Enemy(580, 300, -85);
+    ghost9 = new Enemy(320, 300, -40);
+    ghost10 = new Enemy(420, 300, -95);
 
     allEnemies.push(ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10);
 }
@@ -34,9 +35,27 @@ createEnemies();
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+    if(this.speed) {
+        this.x += this.speed * dt;
+        if (this.x <= - 50) {
+            this.x = 750;
+        } else if (this.x >= 750) {
+            this.x = -50;
+        }
+    } else {
+        this.x -= move[0];
+        this.y -= move[1];
+        if (this.x <= 0) {
+            this.x = 0;
+        } else if (this.x >= 630) {
+            this.x = 630;
+        }
+        if (this.y > 70 && this.y <= 198) {
+            this.y = 198;
+        } else if (this.y >= 540) {
+            this.y = 540;
+        }
+    }
 };
 
 // Draw the enemy on the screen
@@ -46,7 +65,7 @@ Enemy.prototype.render = function() {
 
 
 // Now write your own player class
-// This class requires an update(), render() and
+// This class requires an update() and
 // a handleInput() method.
 
 // Player
@@ -61,7 +80,6 @@ var Player = function(sprite) {
 // Setting inheritance chain to inherit the render and update method from Enemy
 Player.prototype = Object.create(Enemy.prototype);
 
-
 // Function to create all enemies and push them to array with entites, which will be rendered
 var createPlayers = function() {
     var player1, player2, player3, player4, player5;
@@ -75,12 +93,6 @@ var createPlayers = function() {
     player = player1;
 };
 createPlayers();
-
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-
 
 
 // This listens for key presses and sends the keys to your
