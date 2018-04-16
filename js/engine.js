@@ -1,23 +1,10 @@
-/* Engine.js
- * This file provides the game loop functionality (update entities and render),
- * draws the initial game board on the screen, and then calls the update and
- * render methods on your player and enemy objects (defined in your app.js).
- *
- * A game engine works by drawing the entire game screen over and over, kind of
- * like a flipbook you may have created as a kid. When your player moves across
- * the screen, it may look like just that image/character is moving or being
- * drawn but that is not the case. What's really happening is the entire "scene"
- * is being drawn over and over, presenting the illusion of animation.
- *
- * This engine makes the canvas' context (ctx) object globally available to make 
- * writing app.js a little simpler to work with.
- */
+// Engine.js
 
+// Make the canvas context (ctx) object globally available to make writing app.js simpler to work with
 var Engine = (function(global) {
-    /* Predefine the variables we'll be using within this scope,
-     * create the canvas element, grab the 2D context for that canvas
-     * set the canvas elements height/width and add it to the DOM.
-     */
+
+    //Predefine the variables, create the canvas element, grab the 2D context for that canvas
+    //set the canvas elements height/width and add it to the DOM
     var doc = global.document,
         win = global.window,
         canvas = doc.createElement('canvas'),
@@ -27,13 +14,10 @@ var Engine = (function(global) {
     canvas.width = 700;
     canvas.height = 630;
     doc.body.appendChild(canvas);
-
-    //doorSmall = new LayoutElement(210, 12, 'images/doorOpenSmall.png');
    
-    /* This function serves as the kickoff point for the game loop itself
-     * and handles properly calling the update and render methods.
-     */
+    // startpoint for the game loop, call the update and render methods
     function main() {
+
         /* Get our time delta information which is required if your game
          * requires smooth animation. Because everyone's computer processes
          * instructions at different speeds we need a constant value that
@@ -60,10 +44,8 @@ var Engine = (function(global) {
         win.requestAnimationFrame(main);
     }
 
-    /* This function does some initial setup that should only occur once,
-     * particularly setting the lastTime variable that is required for the
-     * game loop.
-     */
+    
+    // Initial setup at the beginning of the game
     function init() {
         reset();
         lastTime = Date.now();
@@ -105,9 +87,8 @@ var Engine = (function(global) {
      * they are just drawing the entire screen over and over.
      */
     function render() {
-        /* This array holds the relative URL to the image used
-         * for that particular row of the game level.
-         */
+
+        // Array with relative URL to the image used for the particular row of the game level
         var rowImages = [
                 'images/skyBlock.png',     //row 1 of 4 of sky
                 'images/skyBlock.png',     //row 2 of 4 of sky
@@ -127,27 +108,35 @@ var Engine = (function(global) {
         // Before drawing, clear existing canvas
         ctx.clearRect(0,0,canvas.width,canvas.height)
 
-        /* Loop through the number of rows and columns we've defined above
-         * and, using the rowImages array, draw the correct image for that
-         * portion of the "grid"
-         */
+        //Loop through the number of rows and columns and draw the correct image for that portion of the "grid"
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
-                /* The drawImage function of the canvas' context element
-                 * requires 3 parameters: the image to draw, the x coordinate
-                 * to start drawing and the y coordinate to start drawing.
-                 * We're using our Resources helpers to refer to our images
-                 * so that we get the benefits of caching these images, since
-                 * we're using them over and over.
-                 */
+
+                // For all the rows except last one
                 if (row != numRows - 1) {
                     ctx.drawImage(Resources.get(rowImages[row]), col * 70, row * 70);
+
+                // For the last row (for layout improvment)    
                 } else {
                     ctx.drawImage(Resources.get(rowImages[row]), col * 70, (row - 1) * 70);
                 }
-                
             }
         }
+
+        // Draw the layout, additional elements
+        ctx.drawImage(Resources.get('images/doorOpenSmall.png'), 210, 12);
+        ctx.drawImage(Resources.get('images/boxBlock.png'), 0, 70);
+        ctx.drawImage(Resources.get('images/boxBlock.png'), 70, 70);
+        ctx.drawImage(Resources.get('images/boxBlock.png'), 140, 70);
+        ctx.drawImage(Resources.get('images/boxBlock.png'), 210, 70);
+        ctx.drawImage(Resources.get('images/doorLockedTop.png'), 630, 140);
+        ctx.drawImage(Resources.get('images/doorLockedBottom.png'), 630, 210);
+        ctx.drawImage(Resources.get('images/cloud1.png'), 540, 20);
+        ctx.drawImage(Resources.get('images/cloud2.png'), 350, 100);
+        ctx.drawImage(Resources.get('images/bush.png'), 100, 210);
+        ctx.drawImage(Resources.get('images/bush.png'), 450, 210);
+        ctx.drawImage(Resources.get('images/signRight.png'), 520, 210);
+        ctx.drawImage(Resources.get('images/star.png'), 0, 0);
 
         renderEntities();
     }
@@ -182,10 +171,7 @@ var Engine = (function(global) {
         // noop
     }
 
-    /* Go ahead and load all of the images we know we're going to need to
-     * draw our game level. Then set init as the callback method, so that when
-     * all of these images are properly loaded our game will start.
-     */
+    // Load all of the images needed for the game
     Resources.load([
         'images/bottomBlock.png',
         'images/grassBlock.png',
@@ -200,13 +186,16 @@ var Engine = (function(global) {
         'images/bush.png',
         'images/signRight.png',
         'images/star.png',
-        'images/ghost.png'
+        'images/ghost.png',
+        'images/player1.png',
+        'images/player2.png',
+        'images/player3.png',
+        'images/player4.png',
+        'images/player5.png',
     ]);
     Resources.onReady(init);
 
-    /* Assign the canvas' context object to the global variable (the window
-     * object when run in a browser) so that developers can use it more easily
-     * from within their app.js files.
-     */
+    //Assign the canvas context object to the global variable (the window object when run in a browser), so it's easier to use it in app.js file
     global.ctx = ctx;
+
 })(this);
