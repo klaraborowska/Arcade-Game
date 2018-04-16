@@ -158,6 +158,7 @@ var Engine = (function(global) {
         }
         
         player.render();
+        ctx.drawImage(Resources.get('images/num_' + gems + '.png'), 710, 20);
     }
 
     /* This function does nothing but it could have been a good place to
@@ -197,7 +198,15 @@ var Engine = (function(global) {
         'images/player4.png',
         'images/player5.png',
         'images/gem.png',
-        'images/key.png'
+        'images/key.png', 
+        'images/num_0.png',
+        'images/num_1.png',
+        'images/num_2.png',
+        'images/num_3.png',
+        'images/num_4.png',
+        'images/num_5.png',
+        'images/num_6.png',
+        'images/num_7.png'
     ]);
     Resources.onReady(init);
 
