@@ -148,6 +148,15 @@ var Engine = (function(global) {
             gem.render();
         });
 
+        // Render the key, when 5 gems are collected
+        if (gems > 4) {
+            doorKey.render();
+
+            if (doorKey.y >= 1000) {
+                doorKey.renderDoor();
+            }
+        }
+        
         player.render();
     }
 
@@ -169,6 +178,8 @@ var Engine = (function(global) {
         'images/doorOpenSmall.png',
         'images/doorLockedTop.png',
         'images/doorLockedBottom.png',
+        'images/doorOpenTop.png',
+        'images/doorOpenBottom.png',
         'images/cloud1.png',
         'images/cloud2.png',
         'images/bush.png',

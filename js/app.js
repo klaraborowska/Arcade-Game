@@ -65,10 +65,14 @@ Enemy.prototype.update = function(dt) {
         } else if (this.x >= 10 * columnWidth) {
             this.x = 10 * columnWidth;
         } 
-        if (this.y <= 3 * rowHeight) {
+        if (this.y <= 3 * rowHeight && this.y > 1) {
             this.y = 3 * rowHeight;
         } else if (this.y >= 8 * rowHeight) {
             this.y = 8 * rowHeight;
+        }
+        // When the player reach the top door
+        if (this.y == 0 && this.x > 210) {
+            this.x = 210;
         }
     }
 };
@@ -130,6 +134,9 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
+// EXTRA ITEMS
+
+// Function constructor for extra items
 var ExtraItem = function () {
     this.x = columnWidth * Math.floor(Math.random() * 10) + 10;
     this.y = rowHeight * (Math.floor(Math.random() * 4) + 4) + 25;
@@ -139,25 +146,12 @@ var ExtraItem = function () {
 // Setting inheritance chain to inherit the render method from Enemy
 ExtraItem.prototype = Object.create(Enemy.prototype);
 
-// Method to collect extras and remove them from board items
+// Method to remove extra items
 ExtraItem.prototype.remove = function() {
-  
     this.y = 1000;
 }
 
-
-function collectExtras() {
-   
-    allGems.forEach(function(item) {
-
-        if (Math.abs(player.y - item.y) < 30 && Math.abs(player.x - item.x) < 30) {
-            item.remove();
-            gems +=1;
-        }
-    });
-}
-
-var createExtraItems = function() {
+var createExtras = function() {
     var gem1, gem2, gem3, gem4, gem5, gem6, doorKey;
 
     gem1 = new ExtraItem;
@@ -166,9 +160,37 @@ var createExtraItems = function() {
     gem4 = new ExtraItem;
     gem5 = new ExtraItem;
     gem6 = new ExtraItem;
-    doorKey = new ExtraItem;
-    doorKey.sprite = 'images/key.png';
 
     allGems.push(gem1, gem2, gem3, gem4, gem5, gem6);
 }
-createExtraItems();
+createExtras();
+
+var doorKey = new ExtraItem;
+doorKey.sprite = 'images/key.png';
+doorKey.renderDoor = function() {
+  
+    ctx.drawImage(Resources.get('images/doorOpenTop.png'), 690, 140);
+    ctx.drawImage(Resources.get('images/doorOpenBottom.png'), 690, 210);
+
+    if (player.x > 690 && player.y == 210) {
+        player.x = 210;
+        player.y = 0;
+    }
+    
+}
+
+function collectExtras() {
+   
+    allGems.forEach(function(item) {
+
+        if (Math.abs(player.y - item.y) < 30 && Math.abs(player.x - item.x) < 30) {
+            item.remove();
+            gems += 1;
+        }
+    });
+
+    if (gems > 4) {
+        allGems.push(doorKey);
+    }
+}
+
