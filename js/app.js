@@ -1,5 +1,7 @@
-var allEnemies, player;
-//move = [0, 0];
+var allEnemies, player, playerStartX, playerStartY;
+
+playerStartX = 350;
+playerStartY = 550;
 
 // ENEMIES
 
@@ -61,8 +63,8 @@ Enemy.prototype.update = function(dt) {
         } 
         if (this.y <= 198) {
             this.y = 198;
-        } else if (this.y >= 540) {
-            this.y = 540;
+        } else if (this.y >= 550) {
+            this.y = 550;
         }
     }
 };
@@ -76,8 +78,8 @@ Enemy.prototype.render = function() {
 
 // Function constructor for player
 var Player = function(sprite) {
-    this.x = 350;
-    this.y = 540;
+    this.x = playerStartX;
+    this.y = playerStartY;
     this.move = [0, 0];
     this.sprite = sprite;
 }; 
