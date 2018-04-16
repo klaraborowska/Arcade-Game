@@ -1,16 +1,16 @@
 var allEnemies, player, playerStartX, playerStartY;
 
 playerStartX = 350;
-playerStartY = 550;
+playerStartY = 560;
 
 // ENEMIES
 
 // Function constructor for enemy
-var Enemy = function(x, y, speed) {
+var Enemy = function(x, y, speed, sprite) {
     this.x = x;
     this.y = y;
     this.speed = speed;
-    this.sprite = 'images/ghost.png';
+    this.sprite = 'images/ghost' + sprite + '.png';
 }; 
 
 // Array to store enemies
@@ -20,16 +20,16 @@ allEnemies = [];
 var createEnemies = (function() {
     var ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10;
 
-    ghost1 = new Enemy(10, 500, 200);
-    ghost2 = new Enemy(200, 500, 80);
-    ghost3 = new Enemy(630, 500, 40);
-    ghost4 = new Enemy(220, 430, -100);
-    ghost5 = new Enemy(420, 430, -200);
-    ghost6 = new Enemy(100, 370, 85);
-    ghost7 = new Enemy(250, 370, 165);
-    ghost8 = new Enemy(580, 300, -85);
-    ghost9 = new Enemy(320, 300, -40);
-    ghost10 = new Enemy(20, 300, -95);
+    ghost1 = new Enemy(10, 500, 200, 2);
+    ghost2 = new Enemy(200, 500, 40, 3);
+    ghost3 = new Enemy(630, 500, 100, 1);
+    ghost4 = new Enemy(220, 430, -100, 11);
+    ghost5 = new Enemy(420, 430, -200, 22);
+    ghost6 = new Enemy(100, 370, 35, 3);
+    ghost7 = new Enemy(250, 370, 165, 2);
+    ghost8 = new Enemy(580, 300, -45, 33);
+    ghost9 = new Enemy(320, 300, -80, 11);
+    ghost10 = new Enemy(20, 300, -175, 22);
 
     allEnemies.push(ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10);
 })();
@@ -63,8 +63,8 @@ Enemy.prototype.update = function(dt) {
         } 
         if (this.y <= 198) {
             this.y = 198;
-        } else if (this.y >= 550) {
-            this.y = 550;
+        } else if (this.y >= 560) {
+            this.y = 560;
         }
     }
 };
