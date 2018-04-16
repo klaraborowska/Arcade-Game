@@ -141,27 +141,16 @@ var Engine = (function(global) {
         renderEntities();
     }
 
+    // Render enemies and player
     function renderEntities() {
-        
-        entities.forEach(function(el) {
-            el.render();
+
+        //Loop through all of the objects within the allEnemies array render enemies
+        allEnemies.forEach(function(enemy) {
+            enemy.render();
         });
-    } 
-    /* This function is called by the render function and is called on each game
-     * tick. Its purpose is to then call the render functions you have defined
-     * on your enemy and player entities within app.js
-     */
 
-    //function renderEntities() {
-        /* Loop through all of the objects within the allEnemies array and call
-         * the render function you have defined.
-         */
-        //allEnemies.forEach(function(enemy) {
-            //enemy.render();
-        //});
-
-        //player.render();
-    //}
+        player.render();
+    }
 
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen

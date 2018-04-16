@@ -1,7 +1,6 @@
-// Array to store elements that needs to be rendered (enemies, player)
-var entities = [];
+var allEnemies, player;
 
-// Enemies our player must avoid
+// Enemies
 
 // Function constructor for enemy
 var Enemy = function(x, y) {
@@ -9,6 +8,9 @@ var Enemy = function(x, y) {
     this.y = y;
     this.sprite = 'images/ghost.png';
 }; 
+
+// Array to store enemies
+allEnemies = [];
 
 // Function to create all enemies and push them to array with entites, which will be rendered
 var createEnemies = function() {
@@ -25,7 +27,7 @@ var createEnemies = function() {
     ghost9 = new Enemy(320, 300);
     ghost10 = new Enemy(420, 300);
 
-    entities.push(ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10);
+    allEnemies.push(ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10);
 }
 createEnemies();
 
@@ -37,7 +39,7 @@ Enemy.prototype.update = function(dt) {
     // all computers.
 };
 
-// Draw the enemy on the screen, required method for game
+// Draw the enemy on the screen
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -56,8 +58,9 @@ var Player = function(sprite) {
     this.sprite = sprite;
 }; 
 
-// Setting inheritance chain to inherit the render and update method
+// Setting inheritance chain to inherit the render and update method from Enemy
 Player.prototype = Object.create(Enemy.prototype);
+
 
 // Function to create all enemies and push them to array with entites, which will be rendered
 var createPlayers = function() {
@@ -69,9 +72,8 @@ var createPlayers = function() {
     player4 = new Player('images/player4.png');
     player5 = new Player('images/player5.png');
 
-    entities.push(player1);
-}
-console.log(entities);
+    player = player1;
+};
 createPlayers();
 
 
