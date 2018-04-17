@@ -55,15 +55,27 @@ var Engine = (function(global) {
 
                 // enemies coming from left side
                 if (player.x > enemy.x && xDiff < 35) {
+                    if (audioOn){
+                        new Audio('audio/ghost.wav').play();
+                    }
                     player.x = playerStartX
-                    player.y = playerStartY; 
+                    player.y = playerStartY;
                     player.live -= 1;
 
                 // enemies coming from right side
                 } else if (player.x < enemy.x && Math.abs(xDiff) < 55) {
+                    if (audioOn){
+                        new Audio('audio/ghost.wav').play();
+                    }
                     player.x = playerStartX;
                     player.y = playerStartY;
                     player.live -= 1;
+                }
+                if (player.live == 0) {
+                    if (audioOn){
+                        new Audio('audio/lose.wav').play();
+                    }
+                    player.y = 2000;
                 }
             }
         });

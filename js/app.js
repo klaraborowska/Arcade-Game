@@ -1,4 +1,5 @@
-var allEnemies, allExtras, liveArr, player, playerStartX, playerStartY, columnWidth, rowHeight, canvasWidth, gems, key;
+var allEnemies, allExtras, liveArr, player, playerStartX, playerStartY, columnWidth, rowHeight, canvasWidth, audioOn;
+audioOn = true;
 allEnemies = [];
 allExtras = [];
 liveArr = [];
@@ -67,7 +68,7 @@ Enemy.prototype.update = function(dt) {
         } 
         if (this.y <= 3 * rowHeight && this.y > 1) {
             this.y = 3 * rowHeight;
-        } else if (this.y >= 8 * rowHeight) {
+        } else if (this.y >= 8 * rowHeight && this.y < 1000) {
             this.y = 8 * rowHeight;
         }
         // When the player reach the top door
@@ -178,6 +179,9 @@ doorKey.renderDoor = function() {
     ctx.drawImage(Resources.get('images/doorOpenTop.png'), 690, 140);
     ctx.drawImage(Resources.get('images/doorOpenBottom.png'), 690, 210);
     if (player.x > 690 && player.y == 210) {
+        if (audioOn){
+            new Audio('audio/door.wav').play();
+        }
         player.x = 210;
         player.y = 0;
     }  
@@ -187,6 +191,9 @@ doorKey.renderDoor = function() {
 function collectExtras() {
     allExtras.forEach(function(item) {
         if (Math.abs(player.y - item.y) < 30 && Math.abs(player.x - item.x) < 30) {
+            if (audioOn){
+                new Audio('audio/gem.wav').play();
+            }
             item.remove();
             player.collectedGems += 1;
         }
@@ -195,6 +202,10 @@ function collectExtras() {
     // Render the key, when at least 5 gems are collected
     if (player.collectedGems > 4) {
         allExtras.push(doorKey);
+        if (player.x < 70 && player.y < 70) {
+            //new Audio('audio/win.mp3').play();
+            player.y == 2000;
+        }
     }
 }
 
