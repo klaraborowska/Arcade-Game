@@ -33,10 +33,8 @@ var Engine = (function(global) {
         win.requestAnimationFrame(main);
     }
 
-    
     // Initial setup at the beginning of the game
     function init() {
-        reset();
         lastTime = Date.now();
         main();
     }
@@ -59,11 +57,13 @@ var Engine = (function(global) {
                 if (player.x > enemy.x && xDiff < 35) {
                     player.x = playerStartX
                     player.y = playerStartY; 
+                    player.live -= 1;
 
                 // enemies coming from right side
                 } else if (player.x < enemy.x && Math.abs(xDiff) < 55) {
                     player.x = playerStartX;
                     player.y = playerStartY;
+                    player.live -= 1;
                 }
             }
         });
@@ -130,6 +130,7 @@ var Engine = (function(global) {
         ctx.drawImage(Resources.get('images/bush.png'), 450, 210);
         ctx.drawImage(Resources.get('images/signRight.png'), 520, 210);
         ctx.drawImage(Resources.get('images/star.png'), 0, 0);
+        ctx.drawImage(Resources.get('images/num_' + player.collectedGems + '.png'), 710, 20);
 
         // Render characters
         renderEntities();
@@ -144,29 +145,21 @@ var Engine = (function(global) {
         });
 
         // Render all gems
-        allGems.forEach(function(gem) {
+        allExtras.forEach(function(gem) {
             gem.render();
         });
 
         // Render the key, when 5 gems are collected
-        if (gems > 4) {
+        if (player.collectedGems > 4) {
             doorKey.render();
-
+            
+            // If doorKey is collected, open the doors
             if (doorKey.y >= 1000) {
                 doorKey.renderDoor();
             }
         }
         
         player.render();
-        ctx.drawImage(Resources.get('images/num_' + gems + '.png'), 710, 20);
-    }
-
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
-    function reset() {
-        // noop
     }
 
     // Load all of the images needed for the game

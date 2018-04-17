@@ -1,14 +1,12 @@
 var allEnemies, player, playerStartX, playerStartY, columnWidth, rowHeight, canvasWidth, gems, key;
-
 allEnemies = [];
-allGems = [];
+allExtras = [];
 playerStartX = 358;
 playerStartY = 560;
-gems = 0;
-key = 0;
 columnWidth = 70;
 rowHeight = 70;
 canvasWidth = 700;
+
 
 // ENEMIES
 
@@ -21,7 +19,7 @@ var Enemy = function(x, y, speed, sprite) {
 }; 
 
 // Function to create all enemies and push them to array with entites, which will be rendered, it can be invoked right at the begining of the game
-var createEnemies = (function() {
+var createEnemies = function() {
     var ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10;
 
     ghost1 = new Enemy(10, 500, 200, 2);
@@ -36,7 +34,8 @@ var createEnemies = (function() {
     ghost10 = new Enemy(20, 300, -175, 22);
 
     allEnemies.push(ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10);
-})();
+}
+createEnemies();
 
 // Update the element position, the method will be used also to update player position
 // Parameter: dt, a time delta between ticks
@@ -89,6 +88,8 @@ var Player = function(sprite) {
     this.x = playerStartX;
     this.y = playerStartY;
     this.move = [0, 0];
+    this.live = 3;
+    this.collectedGems = 0;
     this.sprite = sprite;
 }; 
 
@@ -130,8 +131,9 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-
-    player.handleInput(allowedKeys[e.keyCode]);
+    if (player.live > 0) {
+        player.handleInput(allowedKeys[e.keyCode]);
+    }
 });
 
 // EXTRA ITEMS
@@ -151,6 +153,7 @@ ExtraItem.prototype.remove = function() {
     this.y = 1000;
 }
 
+// Function to create all extras and push them to array, which will be rendered
 var createExtras = function() {
     var gem1, gem2, gem3, gem4, gem5, gem6, doorKey;
 
@@ -161,36 +164,54 @@ var createExtras = function() {
     gem5 = new ExtraItem;
     gem6 = new ExtraItem;
 
-    allGems.push(gem1, gem2, gem3, gem4, gem5, gem6);
+    allExtras.push(gem1, gem2, gem3, gem4, gem5, gem6);
 }
 createExtras();
 
+// New door Key object, outside of createExtrasc- - must be rendered later
 var doorKey = new ExtraItem;
 doorKey.sprite = 'images/key.png';
+
+// Method to open and enter the door
 doorKey.renderDoor = function() {
-  
     ctx.drawImage(Resources.get('images/doorOpenTop.png'), 690, 140);
     ctx.drawImage(Resources.get('images/doorOpenBottom.png'), 690, 210);
-
     if (player.x > 690 && player.y == 210) {
         player.x = 210;
         player.y = 0;
-    }
-    
+    }  
 }
 
+// Function to collect extra items
 function collectExtras() {
-   
-    allGems.forEach(function(item) {
-
+    allExtras.forEach(function(item) {
         if (Math.abs(player.y - item.y) < 30 && Math.abs(player.x - item.x) < 30) {
             item.remove();
-            gems += 1;
+            player.collectedGems += 1;
         }
     });
 
-    if (gems > 4) {
-        allGems.push(doorKey);
+    // Render the key, when at least 5 gems are collected
+    if (player.collectedGems > 4) {
+        allExtras.push(doorKey);
     }
 }
 
+// Event listener for testing only!!! to be deleted
+document.addEventListener('keydown', function(e) {
+    if (e.keyCode == 13) {
+        resetGame();
+    }
+});
+
+// Reset settings for the new game
+function resetGame() {
+    player.x = playerStartX;
+    player.y = playerStartY;
+    player.collectedGems = 0;
+    player.live = 3;
+    allEnemies = [];
+    createEnemies();
+    allExtras = [];
+    createExtras();
+}
