@@ -1,5 +1,5 @@
 var allEnemies, allExtras, liveArr, player, playerStartX, playerStartY, columnWidth, rowHeight, canvasWidth, audioOn;
-audioOn = true;
+audioOn;
 allEnemies = [];
 allExtras = [];
 liveArr = [];
@@ -36,6 +36,7 @@ createEnemies = function() {
     ghost10 = new Enemy(20, 300, -225, 22);
 
     allEnemies.push(ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10);
+
 }
 createEnemies();
 
@@ -66,7 +67,7 @@ var Player = function() {
     this.move = [0, 0];
     this.live = 3;
     this.collectedGems = 0;
-    this.win = false;
+    this.end = false;
     this.sprite = 'images/player1.png';
 }; 
 
@@ -102,8 +103,8 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.wonGame = function() {
-    player.win = true;
+Player.prototype.endGame = function() {
+    player.end = true;
     document.querySelector(".end-banner").classList.add("show");
     document.querySelector(".final-img").src = player.sprite;
     if (player.y > 1000) {
@@ -134,7 +135,7 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-    if (player.live > 0 && player.win === false && document.querySelector(".popup-welcome").classList.contains("hide")) {
+    if (player.live > 0 && player.end === false && document.querySelector(".popup-welcome").classList.contains("hide")) {
         player.handleInput(allowedKeys[e.keyCode]);
     }
 });
@@ -248,7 +249,7 @@ function resetGame() {
     allExtras = [];
     createExtras();
     doorKey.y = rowHeight * (Math.floor(Math.random() * 4) + 4) + 25;
-    player.win = false;
+    player.end = false;
 }
 
 // Event listener to choose a player and start a game
@@ -262,4 +263,14 @@ document.querySelector("#start").addEventListener("submit", function(e) {
 
     document.querySelector(".popup-welcome").classList.add("hide");
     e.preventDefault();
+});
+
+document.querySelector(".sound-btn").addEventListener('click', function() {
+    document.querySelector(".sound-on").classList.toggle("hide");
+    document.querySelector(".sound-off").classList.toggle("hide");
+    if (audioOn == true) {
+        audioOn = false;
+    } else {
+        audioOn = true;
+    }
 });

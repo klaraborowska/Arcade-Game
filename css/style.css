@@ -4,7 +4,7 @@
 
 body {
     text-align: center;
-    padding: 20px;
+    padding: 25px;
     background-color: #333;
     color: #333;
     font-size: 16px;
@@ -18,6 +18,10 @@ ul, h1, h2, h3 {
 
 ul {
     list-style-type: none;
+}
+
+a {
+    color: inherit;
 }
 .upper {
     text-transform: uppercase;
@@ -118,4 +122,23 @@ ul {
     visibility: visible;
     opacity: 1;
     transition: all 0.6s;
+}
+
+.sound-btn {
+    position: absolute;
+    top: 1px;
+    background-color: #fff;
+    border: 1px solid #555;
+    cursor: pointer;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: -10;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
 }

@@ -37,6 +37,7 @@ var Engine = (function(global) {
     function init() {
         lastTime = Date.now();
         main();
+        audioOn = true;
     }
 
     // Update position of enemies and player and check if they don't touch each other
@@ -76,13 +77,15 @@ var Engine = (function(global) {
                         new Audio('audio/lose.wav').play();
                     }
                     player.y = 2000;
-                    player.wonGame();
+                    player.endGame();
                 }
             }
         });
         if (player.x < 70 && player.y < 70) {
-            player.win = true;
-            player.wonGame();
+            player.end = true;
+            player.endGame();
+            new Audio('audio/win.wav').play();
+            player.x = 71;
         }
     } 
 
