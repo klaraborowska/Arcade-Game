@@ -79,6 +79,9 @@ var Engine = (function(global) {
                 }
             }
         });
+        if (player.x < 70 && player.y < 70) {
+            player.win = true;
+        }
     } 
 
     // Update the moves of enemies and player
@@ -142,21 +145,17 @@ var Engine = (function(global) {
         ctx.drawImage(Resources.get('images/bush.png'), 450, 210);
         ctx.drawImage(Resources.get('images/signRight.png'), 520, 210);
         ctx.drawImage(Resources.get('images/star.png'), 0, 0);
-        ctx.drawImage(Resources.get('images/num_' + player.collectedGems + '.png'), 710, 20);
-        ctx.drawImage(Resources.get('images/heartEmpty.png'), 630, 25);
-        ctx.drawImage(Resources.get('images/heartEmpty.png'), 600, 25);
-        ctx.drawImage(Resources.get('images/heartEmpty.png'), 570, 25);
+        ctx.drawImage(Resources.get('images/num_' + player.collectedGems + '.png'), 665, 20);
+        ctx.drawImage(Resources.get('images/gem.png'), 705, 21);
+        ctx.drawImage(Resources.get('images/heartEmpty.png'), 580, 25);
+        ctx.drawImage(Resources.get('images/heartEmpty.png'), 550, 25);
+        ctx.drawImage(Resources.get('images/heartEmpty.png'), 520, 25);
         // Render characters
         renderEntities();
     }
 
     // Render enemies and player
     function renderEntities() {
-
-        // Loop through all of the objects within the allEnemies array render enemies
-        allEnemies.forEach(function(enemy) {
-            enemy.render();
-        });
 
         // Render all gems
         allExtras.forEach(function(gem) {
@@ -172,6 +171,11 @@ var Engine = (function(global) {
                 doorKey.renderDoor();
             }
         }
+
+        // Loop through all of the objects within the allEnemies array render enemies
+        allEnemies.forEach(function(enemy) {
+            enemy.render();
+        });
 
         // Render all lives that the player has
         for (var i = 0; i < player.live; i++) {

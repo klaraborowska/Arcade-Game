@@ -3,9 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <title>Effective JavaScript: Frogger</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="popup-welcome">
+        <div class="rules-container">
+            <h1>Arcade Game</h1>
+            <h2>Game rules</h2>
+            <ul class="rule-box-list">
+                <li class="rule-box">
+                    <div class="icon-box">
+                        <img src="./images/star.png" alt="" class="icon">
+                    </div>
+                    <p class="rule">Reach the star to <span class="upper">win</span> the game</p>
+                </li>
+                <li class="rule-box">
+                    <div class="icon-box">
+                        <img src="./images/doorOpenSmall.png" alt="" class="icon">
+                    </div>
+                    <p class="rule">To get there enter the <span class="upper">open</span> doors</p>
+                </li>
+                <li class="rule-box">
+                    <div class="icon-box">
+                        <img src="./images/key.png" alt="" class="icon">
+                    </div>
+                    <p class="rule">You need a <span class="upper">key</span> to open the doors</p>
+                </li>
+                <li class="rule-box">
+                    <div class="icon-box">
+                        <img src="./images/gem.png" alt="" class="icon">
+                    </div>
+                    <p class="rule">When you collect <span class="upper">5 gems</span> key will appear on the board</p>
+                </li>
+                <li class="rule-box">
+                    <div class="icon-box">
+                        <img src="./images/ghost1.png" alt="" class="icon">
+                    </div>
+                    <p class="rule">Be careful and don't touch the <span class="upper">ghosts</span> </p>
+                </li>
+            </ul>
+            <div class="choose-players">
+                <h3 class="title-choose">Choose your player</h3>
+                <form class="players" action="" id="start">
+                    <div class="player-box">
+                        <label for="player1">
+                            <img src="./images/player1.png" alt="Player 1" class="player">
+                        </label>
+                        <input type="radio" name="players" id="player1" checked>
+                    </div>
+                    <div class="player-box">
+                        <label for="player2">
+                            <img src="./images/player2.png" alt="Player 2" class="player">
+                        </label>
+                        <input type="radio" name="players" id="player2">
+                    </div>
+                    <div class="player-box">
+                        <label for="player3">
+                            <img src="./images/player3.png" alt="Player 3" class="player">
+                        </label>
+                        <input type="radio" name="players" id="player3">
+                    </div>
+                    <div class="player-box">
+                        <label for="player4">
+                            <img src="./images/player4.png" alt="Player 4" class="player">
+                        </label>
+                        <input type="radio" name="players" id="player4">
+                    </div>
+                    <div class="player-box">
+                            <label for="player5">
+                                <img src="./images/player5.png" alt="Player 5" class="player">
+                            </label>
+                        <input type="radio" name="players" id="player5">
+                    </div>
+                    <div class="button-container">
+                        <input type="submit" value="START" class="btn">
+                    </div>
+                  </form>
+            </div>
+        </div> 
+    </div>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>

@@ -28,12 +28,12 @@ var createEnemies = function() {
     ghost2 = new Enemy(200, 500, 40, 3);
     ghost3 = new Enemy(630, 500, 100, 1);
     ghost4 = new Enemy(220, 430, -100, 11);
-    ghost5 = new Enemy(420, 430, -200, 22);
+    ghost5 = new Enemy(420, 430, -250, 22);
     ghost6 = new Enemy(100, 370, 35, 3);
-    ghost7 = new Enemy(250, 370, 165, 2);
+    ghost7 = new Enemy(250, 370, 205, 2);
     ghost8 = new Enemy(580, 300, -45, 33);
     ghost9 = new Enemy(320, 300, -80, 11);
-    ghost10 = new Enemy(20, 300, -175, 22);
+    ghost10 = new Enemy(20, 300, -225, 22);
 
     allEnemies.push(ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10);
 }
@@ -72,8 +72,12 @@ Enemy.prototype.update = function(dt) {
             this.y = 8 * rowHeight;
         }
         // When the player reach the top door
-        if (this.y == 0 && this.x > 210) {
+        if (this.y < 70 && this.x > 210) {
+            this.y = 0;
             this.x = 210;
+        }
+        if (player.y < 0) {
+            player.y = 0;
         }
     }
 };
@@ -93,6 +97,7 @@ var Player = function(sprite) {
     this.live = 3;
     this.collectedGems = 0;
     this.sprite = sprite;
+    this.win = false;
 }; 
 
 // Setting inheritance chain to inherit the render and update method from Enemy
@@ -133,7 +138,7 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-    if (player.live > 0) {
+    if (player.live > 0 && player.win === false && document.querySelector(".popup-welcome").classList.contains("hide")) {
         player.handleInput(allowedKeys[e.keyCode]);
     }
 });
@@ -214,15 +219,17 @@ var Lives = function(x, y) {
     this.y = y;
     this.sprite = 'images/heartFull.png';
 }
+
 // Setting inheritance chain to inherit the render method from Enemy
 Lives.prototype = Object.create(Enemy.prototype);
 
+// Function to create all lives and push them to array, which will be rendered
 function createLives() {
     var heart1, heart2, heart3;
 
-    heart1 = new Lives(570, 25);
-    heart2 = new Lives(600, 25);
-    heart3 = new Lives(630, 25);
+    heart1 = new Lives(520, 25);
+    heart2 = new Lives(550, 25);
+    heart3 = new Lives(580, 25);
 
     liveArr.push(heart1, heart2, heart3);
 }
@@ -246,4 +253,11 @@ function resetGame() {
     allExtras = [];
     createExtras();
     doorKey.y = rowHeight * (Math.floor(Math.random() * 4) + 4) + 25;
+    player.win = false;
 }
+
+document.querySelector("#start").addEventListener("submit", function(e) {
+
+    document.querySelector(".popup-welcome").classList.add("hide");
+    e.preventDefault();
+});
