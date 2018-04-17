@@ -102,6 +102,17 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+Player.prototype.wonGame = function() {
+    player.win = true;
+    document.querySelector(".end-banner").classList.add("show");
+    document.querySelector(".final-img").src = player.sprite;
+    if (player.y > 1000) {
+        document.querySelector(".final-title").textContent = "I'm sorry! You lost!"
+    } else {
+        document.querySelector(".final-title").textContent = "Congratulations! You won!"
+    }
+};
+
 // Move the player after listening to keyboar event
 Player.prototype.handleInput = function(dir) {
     if (dir == "left") {
@@ -221,10 +232,9 @@ function createLives() {
 createLives();
 
 // Event listener for testing only!!! to be deleted
-document.addEventListener('keydown', function(e) {
-    if (e.keyCode == 13) {
-        resetGame();
-    }
+document.querySelector("#play-again").addEventListener('click', function() {
+    resetGame();
+    document.querySelector(".end-banner").classList.remove("show");
 });
 
 // Reset settings for the new game
