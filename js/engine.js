@@ -131,7 +131,9 @@ var Engine = (function(global) {
         ctx.drawImage(Resources.get('images/signRight.png'), 520, 210);
         ctx.drawImage(Resources.get('images/star.png'), 0, 0);
         ctx.drawImage(Resources.get('images/num_' + player.collectedGems + '.png'), 710, 20);
-
+        ctx.drawImage(Resources.get('images/heartEmpty.png'), 630, 25);
+        ctx.drawImage(Resources.get('images/heartEmpty.png'), 600, 25);
+        ctx.drawImage(Resources.get('images/heartEmpty.png'), 570, 25);
         // Render characters
         renderEntities();
     }
@@ -158,7 +160,12 @@ var Engine = (function(global) {
                 doorKey.renderDoor();
             }
         }
-        
+
+        // Render all lives that the player has
+        for (var i = 0; i < player.live; i++) {
+            liveArr[i].render();
+        }
+
         player.render();
     }
 
@@ -199,7 +206,9 @@ var Engine = (function(global) {
         'images/num_4.png',
         'images/num_5.png',
         'images/num_6.png',
-        'images/num_7.png'
+        'images/num_7.png',
+        'images/heartEmpty.png',
+        'images/heartFull.png'
     ]);
     Resources.onReady(init);
 

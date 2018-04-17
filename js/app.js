@@ -1,6 +1,7 @@
-var allEnemies, player, playerStartX, playerStartY, columnWidth, rowHeight, canvasWidth, gems, key;
+var allEnemies, allExtras, liveArr, player, playerStartX, playerStartY, columnWidth, rowHeight, canvasWidth, gems, key;
 allEnemies = [];
 allExtras = [];
+liveArr = [];
 playerStartX = 358;
 playerStartY = 560;
 columnWidth = 70;
@@ -155,7 +156,7 @@ ExtraItem.prototype.remove = function() {
 
 // Function to create all extras and push them to array, which will be rendered
 var createExtras = function() {
-    var gem1, gem2, gem3, gem4, gem5, gem6, doorKey;
+    var gem1, gem2, gem3, gem4, gem5, gem6;
 
     gem1 = new ExtraItem;
     gem2 = new ExtraItem;
@@ -197,6 +198,25 @@ function collectExtras() {
     }
 }
 
+var Lives = function(x, y) {
+    this.x = x;
+    this.y = y;
+    this.sprite = 'images/heartFull.png';
+}
+// Setting inheritance chain to inherit the render method from Enemy
+Lives.prototype = Object.create(Enemy.prototype);
+
+function createLives() {
+    var heart1, heart2, heart3;
+
+    heart1 = new Lives(570, 25);
+    heart2 = new Lives(600, 25);
+    heart3 = new Lives(630, 25);
+
+    liveArr.push(heart1, heart2, heart3);
+}
+createLives();
+
 // Event listener for testing only!!! to be deleted
 document.addEventListener('keydown', function(e) {
     if (e.keyCode == 13) {
@@ -214,4 +234,5 @@ function resetGame() {
     createEnemies();
     allExtras = [];
     createExtras();
+    doorKey.y = rowHeight * (Math.floor(Math.random() * 4) + 4) + 25;
 }
