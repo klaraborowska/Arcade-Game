@@ -21,7 +21,7 @@ var Enemy = function(x, y, speed, sprite) {
 }; 
 
 // Function to create all enemies and push them to array with entites, which will be rendered, it can be invoked right at the begining of the game
-var createEnemies = function() {
+createEnemies = function() {
     var ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10;
 
     ghost1 = new Enemy(10, 500, 200, 2);
@@ -39,46 +39,16 @@ var createEnemies = function() {
 }
 createEnemies();
 
-// Update the element position, the method will be used also to update player position
+// Update the enemy position
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
+    this.x += this.speed * dt;
 
-    // For enemy
-    if(this.speed) {
-        this.x += this.speed * dt;
-
-        // When enemy goes off the canvas, bring it back on the other side
-        if (this.x <= - 50) {
-            this.x = canvasWidth + 50;
-        } else if (this.x >= canvasWidth + 50) {
-            this.x = -50;
-        }
-
-    // For player
-    } else {
-        this.x -= this.move[0];
-        this.y -= this.move[1];
-        this.move = [0, 0];
-
-        // Doesn't allow the player to go off canvas
-        if (this.x <= 0) {
-            this.x = 0;
-        } else if (this.x >= 10 * columnWidth) {
-            this.x = 10 * columnWidth;
-        } 
-        if (this.y <= 3 * rowHeight && this.y > 1) {
-            this.y = 3 * rowHeight;
-        } else if (this.y >= 8 * rowHeight && this.y < 1000) {
-            this.y = 8 * rowHeight;
-        }
-        // When the player reach the top door
-        if (this.y < 70 && this.x > 210) {
-            this.y = 0;
-            this.x = 210;
-        }
-        if (player.y < 0) {
-            player.y = 0;
-        }
+    // When enemy goes off the canvas, bring it back on the other side
+    if (this.x <= - 50) {
+        this.x = canvasWidth + 50;
+    } else if (this.x >= canvasWidth + 50) {
+        this.x = -50;
     }
 };
 
@@ -90,32 +60,47 @@ Enemy.prototype.render = function() {
 // PLAYERS
 
 // Function constructor for player
-var Player = function(sprite) {
+var Player = function() {
     this.x = playerStartX;
     this.y = playerStartY;
     this.move = [0, 0];
     this.live = 3;
     this.collectedGems = 0;
-    this.sprite = sprite;
     this.win = false;
+    this.sprite = 'images/player1.png';
 }; 
 
-// Setting inheritance chain to inherit the render and update method from Enemy
-Player.prototype = Object.create(Enemy.prototype);
+var player = new Player;
 
-// Function to create all enemies and push them to array with entites, which will be rendered
-var createPlayers = function() {
-    var player1, player2, player3, player4, player5;
+Player.prototype.update = function() {
+    this.x -= this.move[0];
+    this.y -= this.move[1];
+    this.move = [0, 0];
 
-    player1 = new Player('images/player1.png');
-    player2 = new Player('images/player2.png');
-    player3 = new Player('images/player3.png');
-    player4 = new Player('images/player4.png');
-    player5 = new Player('images/player5.png');
+    // Doesn't allow the player to go off canvas
+    if (this.x <= 0) {
+        this.x = 0;
+    } else if (this.x >= 10 * columnWidth) {
+        this.x = 10 * columnWidth;
+    } 
+    if (this.y <= 3 * rowHeight && this.y > 1) {
+        this.y = 3 * rowHeight;
+    } else if (this.y >= 8 * rowHeight && this.y < 1000) {
+        this.y = 8 * rowHeight;
+    }
+    // When the player reach the top door
+    if (this.y < 70 && this.x > 210) {
+        this.y = 0;
+        this.x = 210;
+    }
+    if (player.y < 0) {
+        player.y = 0;
+    }
+}
 
-    player = player1;
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-createPlayers();
 
 // Move the player after listening to keyboar event
 Player.prototype.handleInput = function(dir) {
@@ -256,7 +241,14 @@ function resetGame() {
     player.win = false;
 }
 
+// Event listener to choose a player and start a game
 document.querySelector("#start").addEventListener("submit", function(e) {
+    var players = document.getElementsByName("players");
+    for (var i = 0; i < players.length; i++) {
+        if (players[i].checked) {
+            player.sprite = 'images/' + players[i].id + '.png';
+        }
+    }  
 
     document.querySelector(".popup-welcome").classList.add("hide");
     e.preventDefault();
