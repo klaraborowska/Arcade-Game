@@ -106,7 +106,7 @@ var Engine = (function(global) {
         ctx.drawImage(Resources.get('images/bush.png'), 100, 210);
         ctx.drawImage(Resources.get('images/bush.png'), 450, 210);
         ctx.drawImage(Resources.get('images/signRight.png'), 520, 210);
-        ctx.drawImage(Resources.get('images/star.png'), 0, 0);
+        ctx.drawImage(Resources.get('images/Star.png'), 0, 0);
         ctx.drawImage(Resources.get('images/num_' + player.collectedGems + '.png'), 665, 20);
         ctx.drawImage(Resources.get('images/gem.png'), 705, 21);
         ctx.drawImage(Resources.get('images/heartEmpty.png'), 580, 25);
@@ -163,7 +163,7 @@ var Engine = (function(global) {
         'images/cloud2.png',
         'images/bush.png',
         'images/signRight.png',
-        'images/star.png',
+        'images/Star.png',
         'images/ghost1.png',
         'images/ghost2.png',
         'images/ghost3.png',
