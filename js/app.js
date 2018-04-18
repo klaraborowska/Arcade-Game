@@ -1,5 +1,4 @@
-let audioOn;
-
+// Variables for DOM manipulation
 const DOMstrings = {
     welcomeBanner: document.querySelector(".popup-welcome"),
     endBanner: document.querySelector(".end-banner"),
@@ -13,18 +12,34 @@ const DOMstrings = {
     soundOff: document.querySelector(".sound-off")
 }
 
+
+// GAME
+
+// Function constructor for the game
 const Game = function() {
     this.width = 700;
     this.colWidth = 70;
     this.colHeight = 70;
-    this.enemies = [];
-    this.extras = [];
-    this.lives = [];
     this.playerStartX = 358;
     this.playerStartY = 560;
 };
 
-const game = new Game();
+game = new Game();
+
+// Reset all the settings to the initial state
+Game.prototype.reset = function() {
+    player.x = this.playerStartX;
+    player.y = this.playerStartY;
+    doorKey.y = this.colHeight * (Math.floor(Math.random() * 4) + 4) + 25;
+    player.end = false;
+    player.collectedGems = 0;
+    player.live = 3;
+    allEnemies = [];
+    allExtras = [];
+    createEnemies();
+    createExtras();
+}
+
 
 // ENEMIES
 
@@ -36,6 +51,23 @@ const Enemy = function(x, y, speed, sprite) {
     this.sprite = 'images/ghost' + sprite + '.png';
 }; 
 
+// Create enemies and push them to array
+let allEnemies = [];
+function createEnemies() {
+    const ghost1 = new Enemy(10, 500, 200, 2),
+          ghost2 = new Enemy(200, 500, 40, 3),
+          ghost3 = new Enemy(630, 500, 100, 1),
+          ghost4 = new Enemy(220, 430, -100, 11),
+          ghost5 = new Enemy(420, 430, -250, 22),
+          ghost6 = new Enemy(100, 370, 35, 3),
+          ghost7 = new Enemy(250, 370, 205, 2),
+          ghost8 = new Enemy(580, 300, -45, 33),
+          ghost9 = new Enemy(320, 300, -80, 11),
+          ghost10 = new Enemy(20, 300, -225, 22);
+
+    allEnemies.push(ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10);
+};
+createEnemies();
 
 // Update the enemy position
 // Parameter: dt, a time delta between ticks
@@ -55,7 +87,8 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// PLAYERS
+
+// PLAYER
 
 // Function constructor for player
 const Player = function() {
@@ -70,43 +103,20 @@ const Player = function() {
 
 const player = new Player;
 
-Player.prototype.checkMoves = function() {
-    this.x -= this.move[0];
-    this.y -= this.move[1];
-    this.move = [0, 0];
-};
-
-Player.prototype.blockOffCanvas = function() {
-     // Doesn't allow the player to go off canvas
-     if (this.x <= 0) {
-        this.x = 0;
-    } else if (this.x >= 10 * game.colWidth) {
-        this.x = 10 * game.colWidth;
-    } 
-    if (this.y <= 3 * game.colHeight && this.y > 1) {
-        this.y = 3 * game.colHeight;
-    } else if (this.y >= 8 * game.colHeight  && this.y < 1000) {
-        this.y = 8 * game.colHeight ;
-    }
-
-    // When the player reach the top door
-    if (this.y < 70 && this.x > 210) {
-        this.y = 0;
-        this.x = 210;
-    }
-    if (player.y < 0) {
-        player.y = 0;
-    }
-}
-
-Player.prototype.update = function() {
-    player.checkMoves();
-    player.blockOffCanvas();
-}
-
+// Render player method
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+// Change image of the player
+Player.prototype.choosePlayer = function() {
+    const players = DOMstrings.players;
+    for (let i = 0; i < players.length; i++) {
+        if (players[i].checked) {
+            this.sprite = 'images/' + players[i].id + '.png';
+        }
+    }  
+}
 
 // Move the player after listening to keyboar event
 Player.prototype.handleInput = function(dir) {
@@ -121,56 +131,92 @@ Player.prototype.handleInput = function(dir) {
     } 
 };
 
-Player.prototype.choosePlayer = function() {
-    const players = DOMstrings.players;
-    for (let i = 0; i < players.length; i++) {
-        if (players[i].checked) {
-            player.sprite = 'images/' + players[i].id + '.png';
-        }
-    }  
+// Update players move and reset moves after
+Player.prototype.checkMoves = function() {
+    this.x -= this.move[0];
+    this.y -= this.move[1];
+    this.move = [0, 0];
+};
+
+// Doesn't allow the player to go off canvas
+// Player is allowed to jump down to the ground and enter the door again
+Player.prototype.blockOffCanvas = function() {
+     if (this.x <= 0) {
+        this.x = 0;
+    } else if (this.x >= 10 * game.colWidth) {
+        this.x = 10 * game.colWidth;
+    } 
+    if (this.y <= 3 * game.colHeight && this.y > 1) {
+        this.y = 3 * game.colHeight;
+    } else if (this.y >= 8 * game.colHeight  && this.y < 1000) {
+        this.y = 8 * game.colHeight ;
+    }
+    // When the player reach the top door
+    if (this.y < 70 && this.x > 210) {
+        this.y = 0;
+        this.x = 210;
+    }
+    if (this.y < 0) {
+        this.y = 0;
+    }
 }
 
+// Update players position
+Player.prototype.update = function() {
+    this.checkMoves();
+    this.blockOffCanvas();
+}
+
+// Render the key, when player collect 5 gems
+Player.prototype.showKeydoor = function() {
+    if (player.collectedGems > 4) {
+        allExtras.push(doorKey);
+    }
+};
+
+// When player enter the door, move him to to the top
 Player.prototype.enterDoor = function() {
-    if (player.x > 690 && player.y == 210) {
+    if (this.x > 690 && this.y == 210) {
         if (audioOn){
             new Audio('audio/door.wav').play();
         }
-        player.x = 210;
-        player.y = 0;
+        this.x = 210;
+        this.y = 0;
     }  
 };
 
 Player.prototype.lose = function() {
-    if (player.live == 0) {
+    if (this.live == 0) {
         if (audioOn){
             new Audio('audio/lose.wav').play();
         }
-        player.y = 2000;
-        player.endGame();
+        this.y = 2000;
+        this.endGame();
     }
 }
 
 Player.prototype.win = function() {
-    if (player.x < 70 && player.y < 70) {
-        player.end = true;
-        player.endGame();
+    if (this.x < 70 && this.y < 70) {
+        this.end = true;
+        this.endGame();
         if (audioOn) {
             new Audio('audio/win.wav').play();
         }
-        player.x = 71;
+        this.x = 71;
     }
 }
 
 Player.prototype.endGame = function() {
-    player.end = true;
+    this.end = true;
     DOMstrings.endBanner.classList.add("show");
-    DOMstrings.endImg.src = player.sprite;
-    if (player.y > 1000) {
+    DOMstrings.endImg.src = this.sprite;
+    if (this.y > 1000) {
         DOMstrings.endTitle.textContent = "I'm sorry! You lost!"
     } else {
         DOMstrings.endTitle.textContent = "Congratulations! You won!"
     }
 };
+
 
 // EXTRA ITEMS
 
@@ -184,12 +230,27 @@ const ExtraItem = function () {
 // Setting inheritance chain to inherit the render method from Enemy
 ExtraItem.prototype = Object.create(Enemy.prototype);
 
+// Create extra items and push them to array
+let allExtras = []
+function createExtras() {
+    const gem1 = new ExtraItem,
+          gem2 = new ExtraItem,
+          gem3 = new ExtraItem,
+          gem4 = new ExtraItem,
+          gem5 = new ExtraItem,
+          gem6 = new ExtraItem,
+          gem7 = new ExtraItem;
+
+    allExtras.push(gem1, gem2, gem3, gem4, gem5, gem6, gem7);
+};
+createExtras();
+
 // Method to remove extra items
 ExtraItem.prototype.remove = function() {
     this.y = 1000;
 }
 
-// New door Key object, outside of createExtrasc- - must be rendered later
+// New door Key object, outside of createExtras - must be rendered later
 const doorKey = new ExtraItem;
 doorKey.sprite = 'images/key.png';
 
@@ -200,6 +261,7 @@ doorKey.renderDoor = function() {
     player.enterDoor();
 }
 
+// Function constructor for lives
 const Lives = function(x, y) {
     this.x = x;
     this.y = y;
@@ -209,61 +271,23 @@ const Lives = function(x, y) {
 // Setting inheritance chain to inherit the render method from Enemy
 Lives.prototype = Object.create(Enemy.prototype);
 
-Game.prototype.createEnemies = function() {
-    const ghost1 = new Enemy(10, 500, 200, 2),
-          ghost2 = new Enemy(200, 500, 40, 3),
-          ghost3 = new Enemy(630, 500, 100, 1),
-          ghost4 = new Enemy(220, 430, -100, 11),
-          ghost5 = new Enemy(420, 430, -250, 22),
-          ghost6 = new Enemy(100, 370, 35, 3),
-          ghost7 = new Enemy(250, 370, 205, 2),
-          ghost8 = new Enemy(580, 300, -45, 33),
-          ghost9 = new Enemy(320, 300, -80, 11),
-          ghost10 = new Enemy(20, 300, -225, 22);
-
-    game.enemies.push(ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10);
-};
-
-Game.prototype.createExtras = function() {
-    const gem1 = new ExtraItem,
-          gem2 = new ExtraItem,
-          gem3 = new ExtraItem,
-          gem4 = new ExtraItem,
-          gem5 = new ExtraItem,
-          gem6 = new ExtraItem,
-          gem7 = new ExtraItem;
-
-    game.extras.push(gem1, gem2, gem3, gem4, gem5, gem6, gem7);
-};
-
-Game.prototype.createLives = function() {
+// Create lives and push them to array
+let allLives = [];
+function createLives() {
     const heart1 = new Lives(520, 25),
           heart2 = new Lives(550, 25),
           heart3 = new Lives(580, 25);
 
-    game.lives.push(heart1, heart2, heart3);
+    allLives.push(heart1, heart2, heart3);
 };
+createLives();
 
-Game.prototype.createElements = function() {
-    game.createEnemies();
-    game.createExtras();
-};
 
-// Function to collect extra items
-Game.prototype.collectExtras = function() {
-    game.extras.forEach(function(item) {
-        if (Math.abs(player.y - item.y) < 30 && Math.abs(player.x - item.x) < 30) {
-            if (audioOn){
-                new Audio('audio/gem.wav').play();
-            }
-            item.remove();
-            player.collectedGems += 1;
-        }
-    });
-}
+// CHECK COLLISIONS enemy-player, player-extraItem
 
-Game.prototype.checkCollision = function() {
-    game.enemies.forEach(function(enemy) {
+// Check collision between player and enemies 
+function checkCollision() {
+    allEnemies.forEach(function(enemy) {
         yDiff = enemy.y - player.y;
         xDiff = player.x - enemy.x;
         
@@ -282,30 +306,21 @@ Game.prototype.checkCollision = function() {
     });
 }
 
-Game.prototype.checkPosition = function(enemies) {
-    game.checkCollision();
-    player.win();
+// Function to collect extra items
+function collectExtras() {
+    allExtras.forEach(function(item) {
+        if (Math.abs(player.y - item.y) < 30 && Math.abs(player.x - item.x) < 30) {
+            if (audioOn) {
+                new Audio('audio/gem.wav').play();
+            }
+            item.remove();
+            player.collectedGems += 1;
+        }
+    });
 }
 
-Game.prototype.showKeydoor = function() {
-    // Render the key, when at least 5 gems are collected
-    if (player.collectedGems > 4) {
-        game.extras.push(doorKey);
-    }
-}
 
-Game.prototype.reset = function() {
-    player.x = game.playerStartX;
-    player.y = game.playerStartY;
-    player.collectedGems = 0;
-    player.live = 3;
-    game.enemies = [];
-    game.createEnemies();
-    game.extras = [];
-    game.createExtras();
-    doorKey.y = game.colHeight * (Math.floor(Math.random() * 4) + 4) + 25;
-    player.end = false;
-}
+// EVENT LISTENERS
 
 // Event listener to choose a player and start a game
 DOMstrings.startBtn.addEventListener("submit", function(e) {
@@ -314,6 +329,7 @@ DOMstrings.startBtn.addEventListener("submit", function(e) {
     e.preventDefault();
 });
 
+// Event listener to turn on/off audio
 DOMstrings.soundBtn.addEventListener('click', function() {
     DOMstrings.soundOn.classList.toggle("hide");
     DOMstrings.soundOff.classList.toggle("hide");
@@ -324,6 +340,7 @@ DOMstrings.soundBtn.addEventListener('click', function() {
     }
 });
 
+// Event listener to play again and reset the game
 DOMstrings.playAgainBtn.addEventListener('click', function() {
     game.reset();
     DOMstrings.endBanner.classList.remove("show");
@@ -341,6 +358,3 @@ document.addEventListener('keyup', function(e) {
         player.handleInput(allowedKeys[e.keyCode]);
     }
 });
-
-game.createElements();
-game.createLives();

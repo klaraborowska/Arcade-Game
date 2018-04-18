@@ -109,6 +109,10 @@ h1, h2, h3 {
     align-items: center;
 }
 
+.player {
+    cursor: pointer;
+}
+
 /***** END GAME BANNNER *****/
 
 .end-banner {

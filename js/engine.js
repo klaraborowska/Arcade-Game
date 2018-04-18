@@ -1,5 +1,8 @@
 // Engine.js
 
+// For turning on/off audio
+let audioOn;
+
 // Make the canvas context (ctx) object globally available to make writing app.js simpler to work with
 var Engine = (function(global) {
 
@@ -40,17 +43,18 @@ var Engine = (function(global) {
         audioOn = true;
     }
 
-    // Update position of enemies and player and check if they don't touch each other
+    // Update position of enemies and player, check if they don't touch each other, update extras and door
     function update(dt) {
         updateEntities(dt);
-        game.checkPosition(game.enemies);
-        game.collectExtras();
-        game.showKeydoor();
+        checkCollision();
+        collectExtras();
+        player.showKeydoor();
+        player.win();
     }
 
     // Update the moves of enemies and player
     function updateEntities(dt) {
-        game.enemies.forEach(function(enemy) {
+        allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
         player.update();
@@ -116,11 +120,11 @@ var Engine = (function(global) {
         renderEntities();
     }
 
-    // Render enemies and player
+    // Render enemies, player and elements
     function renderEntities() {
 
         // Render all gems
-        game.extras.forEach(function(gem) {
+        allExtras.forEach(function(gem) {
             gem.render();
         });
 
@@ -128,20 +132,20 @@ var Engine = (function(global) {
         if (player.collectedGems > 4) {
             doorKey.render();
             
-            // If doorKey is collected, open the doors
+            // If doorKey is collected, render the open doors
             if (doorKey.y >= 1000) {
                 doorKey.renderDoor();
             }
         }
 
         // Loop through all of the objects within the allEnemies array render enemies
-        game.enemies.forEach(function(enemy) {
+        allEnemies.forEach(function(enemy) {
             enemy.render();
         });
 
         // Render all lives that the player has
         for (let i = 0; i < player.live; i++) {
-            game.lives[i].render();
+            allLives[i].render();
         }
 
         player.render();
