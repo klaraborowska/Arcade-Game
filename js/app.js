@@ -269,7 +269,7 @@ Game.prototype.checkCollision = function() {
         
         if (yDiff > 0 && yDiff < 50) {
 
-            if (player.x > enemy.x && xDiff < 35 || player.x < enemy.x && Math.abs(xDiff) < 55) {
+            if (player.x > enemy.x && xDiff < 35 || player.x < enemy.x && Math.abs(xDiff) < 50) {
                 if (audioOn){
                     new Audio('audio/ghost.wav').play();
                 }

@@ -185,6 +185,7 @@ var Engine = (function(global) {
         'images/num_5.png',
         'images/num_6.png',
         'images/num_7.png',
+        'images/num_8.png',
         'images/heartEmpty.png',
         'images/heartFull.png'
     ]);
