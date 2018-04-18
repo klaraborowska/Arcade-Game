@@ -2,7 +2,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Effective JavaScript: Frogger</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcade Game</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -15,7 +16,7 @@
     </button>
 
     <!-- WELCOME BANNER -->
-    <div class="popup-welcome">
+    <section class="popup-welcome">
         <div class="rules-container">
             <h1>Arcade Game</h1>
             <h2>Game rules</h2>
@@ -53,7 +54,7 @@
             </ul>
             <div class="choose-players">
                 <h3 class="title-choose">Choose your player</h3>
-                <form class="players" action="" id="start">
+                <form class="players" id="start">
                     <div class="player-box">
                         <label for="player1">
                             <img src="./images/player1.png" alt="Player 1" class="player">
@@ -90,15 +91,15 @@
                   </form>
             </div>
         </div> 
-    </div>
+    </section>
 
     <!-- END BANNER -->
-    <div class="end-banner">
+    <section class="end-banner">
         <img src="./images/player3.png" alt="" class="final-img">
         <h2 class="final-title">Congratulations! You won!</h2>
         <p class="play-again">Would you like to play again?</p>
         <button type="button" class="btn" id="play-again">Play</button>
-    </div>
+    </section>
 
     <!-- FOOTER -->
     <footer class="footer">
