@@ -11,7 +11,7 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
-ul, h1, h2, h3 {
+ul, h1, h2, h3, p {
     margin: 0;
     padding: 0;
 }
@@ -23,9 +23,34 @@ ul {
 a {
     color: inherit;
 }
+
+/***** REUSABLE ELEMENTS *****/
+
 .upper {
     text-transform: uppercase;
     font-weight: bold;
+}
+
+.btn {
+    border: 1px solid #777;
+    padding: 7px 30px;
+    border-radius: 3px;
+    cursor: pointer;
+    background-color: #fff;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.btn:hover {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+/***** WELCOME BANNER *****/
+
+/* Game rules */
+
+h1, h2, h3 {
+    text-transform: uppercase;
 }
 
 .popup-welcome {
@@ -50,6 +75,7 @@ a {
 .rule-box {
     display: flex;
     align-items: center;
+    height: 40px;
 }
 
 .icon-box {
@@ -61,10 +87,15 @@ a {
     width: 100%;
 }
 
+/* Choose players */
 .players {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+}
+
+.title-choose {
+    padding-bottom: 30px;
 }
 
 .button-container {
@@ -78,27 +109,7 @@ a {
     align-items: center;
 }
 
-.title-choose {
-    padding-bottom: 30px;
-}
-
-.btn {
-    border: 1px solid #777;
-    padding: 7px 30px;
-    border-radius: 3px;
-    cursor: pointer;
-    background-color: #fff;
-    font-weight: bold;
-    transition: all 0.2s;
-}
-
-.btn:hover {
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-}
-
-.hide {
-    display: none;
-}
+/***** END GAME BANNNER *****/
 
 .end-banner {
     visibility: hidden;
@@ -118,11 +129,7 @@ a {
     padding: 20px;
 }
 
-.show {
-    visibility: visible;
-    opacity: 1;
-    transition: all 0.6s;
-}
+/***** SOUND BUTTON *****/
 
 .sound-btn {
     position: absolute;
@@ -131,6 +138,8 @@ a {
     border: 1px solid #555;
     cursor: pointer;
 }
+
+/***** FOOTER *****/
 
 .footer {
     position: absolute;
@@ -141,4 +150,20 @@ a {
     text-align: center;
     color: #fff;
     font-size: 12px;
+}
+
+.footer p {
+    padding-bottom: 5px;
+}
+
+/***** CLASSES FOR INTERACTIVE ELEMENTS *****/
+
+.hide {
+    display: none;
+}
+
+.show {
+    visibility: visible;
+    opacity: 1;
+    transition: all 0.6s;
 }

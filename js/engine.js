@@ -43,64 +43,21 @@ var Engine = (function(global) {
     // Update position of enemies and player and check if they don't touch each other
     function update(dt) {
         updateEntities(dt);
-        checkCollisions(allEnemies);
+        game.checkPosition(game.enemies);
+        game.collectExtras();
+        game.showKeydoor();
     }
-
-    // When enemy touch the player, the player return to start position
-   function checkCollisions(enemies) {
-        allEnemies.forEach(function(enemy) {
-            yDiff = enemy.y - player.y;
-            xDiff = player.x - enemy.x;
-            
-            if (yDiff > 0 && yDiff < 50) {
-
-                // enemies coming from left side
-                if (player.x > enemy.x && xDiff < 35) {
-                    if (audioOn){
-                        new Audio('audio/ghost.wav').play();
-                    }
-                    player.x = playerStartX
-                    player.y = playerStartY;
-                    player.live -= 1;
-
-                // enemies coming from right side
-                } else if (player.x < enemy.x && Math.abs(xDiff) < 55) {
-                    if (audioOn){
-                        new Audio('audio/ghost.wav').play();
-                    }
-                    player.x = playerStartX;
-                    player.y = playerStartY;
-                    player.live -= 1;
-                }
-                if (player.live == 0) {
-                    if (audioOn){
-                        new Audio('audio/lose.wav').play();
-                    }
-                    player.y = 2000;
-                    player.endGame();
-                }
-            }
-        });
-        if (player.x < 70 && player.y < 70) {
-            player.end = true;
-            player.endGame();
-            new Audio('audio/win.wav').play();
-            player.x = 71;
-        }
-    } 
 
     // Update the moves of enemies and player
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
+        game.enemies.forEach(function(enemy) {
             enemy.update(dt);
         });
         player.update();
-        collectExtras();
     }
 
     // Draw the game elements on the canvas
     function render() {
-
         // Array with relative URL to the image used for the particular row of the game level
         var rowImages = [
                 'images/skyBlock.png',     //row 1 of 4 of sky
@@ -127,11 +84,11 @@ var Engine = (function(global) {
 
                 // For all the rows except last one
                 if (row != numRows - 1) {
-                    ctx.drawImage(Resources.get(rowImages[row]), col * columnWidth, row * rowHeight);
+                    ctx.drawImage(Resources.get(rowImages[row]), col * game.colWidth, row * game.colHeight);
 
                 // For the last row (for layout improvment)    
                 } else {
-                    ctx.drawImage(Resources.get(rowImages[row]), col * columnWidth, (row - 1) * rowHeight);
+                    ctx.drawImage(Resources.get(rowImages[row]), col *game.colWidth, (row - 1) * game.colHeight);
                 }
             }
         }
@@ -163,7 +120,7 @@ var Engine = (function(global) {
     function renderEntities() {
 
         // Render all gems
-        allExtras.forEach(function(gem) {
+        game.extras.forEach(function(gem) {
             gem.render();
         });
 
@@ -178,13 +135,13 @@ var Engine = (function(global) {
         }
 
         // Loop through all of the objects within the allEnemies array render enemies
-        allEnemies.forEach(function(enemy) {
+        game.enemies.forEach(function(enemy) {
             enemy.render();
         });
 
         // Render all lives that the player has
-        for (var i = 0; i < player.live; i++) {
-            liveArr[i].render();
+        for (let i = 0; i < player.live; i++) {
+            game.lives[i].render();
         }
 
         player.render();
