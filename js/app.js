@@ -211,9 +211,11 @@ Player.prototype.endGame = function() {
     DOMstrings.endBanner.classList.add("show");
     DOMstrings.endImg.src = this.sprite;
     if (this.y > 1000) {
-        DOMstrings.endTitle.textContent = "I'm sorry! You lost!"
+        DOMstrings.endTitle.textContent = "I'm sorry! You lost!";
+        DOMstrings.playAgainBtn.focus();
     } else {
-        DOMstrings.endTitle.textContent = "Congratulations! You won!"
+        DOMstrings.endTitle.textContent = "Congratulations! You won!";
+        DOMstrings.playAgainBtn.focus();
     }
 };
 
