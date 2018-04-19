@@ -10,7 +10,7 @@ const DOMstrings = {
     soundBtn: document.querySelector(".sound-btn"),
     soundOn: document.querySelector(".sound-on"),
     soundOff: document.querySelector(".sound-off")
-}
+};
 
 
 // GAME
@@ -38,7 +38,7 @@ Game.prototype.reset = function() {
     allExtras = [];
     createEnemies();
     createExtras();
-}
+};
 
 
 // ENEMIES
@@ -66,7 +66,7 @@ function createEnemies() {
           ghost10 = new Enemy(20, 300, -225, 22);
 
     allEnemies.push(ghost1, ghost2, ghost3, ghost4, ghost5, ghost6, ghost7, ghost8, ghost9, ghost10);
-};
+}
 createEnemies();
 
 // Update the enemy position
@@ -116,7 +116,7 @@ Player.prototype.choosePlayer = function() {
             this.sprite = 'images/' + players[i].id + '.png';
         }
     }  
-}
+};
 
 // Move the player after listening to keyboar event
 Player.prototype.handleInput = function(dir) {
@@ -159,13 +159,13 @@ Player.prototype.blockOffCanvas = function() {
     if (this.y < 0) {
         this.y = 0;
     }
-}
+};
 
 // Update players position
 Player.prototype.update = function() {
     this.checkMoves();
     this.blockOffCanvas();
-}
+};
 
 // Render the key, when player collect 5 gems
 Player.prototype.showKeydoor = function() {
@@ -193,7 +193,7 @@ Player.prototype.lose = function() {
         this.y = 2000;
         this.endGame();
     }
-}
+};
 
 Player.prototype.win = function() {
     if (this.x < 70 && this.y < 70) {
@@ -204,7 +204,7 @@ Player.prototype.win = function() {
         }
         this.x = 71;
     }
-}
+};
 
 Player.prototype.endGame = function() {
     this.end = true;
@@ -225,7 +225,7 @@ const ExtraItem = function () {
     this.x = game.colWidth * Math.floor(Math.random() * 10) + 10;
     this.y = game.colHeight * (Math.floor(Math.random() * 4) + 4) + 25;
     this.sprite = 'images/gem.png';
-}
+};
 
 // Setting inheritance chain to inherit the render method from Enemy
 ExtraItem.prototype = Object.create(Enemy.prototype);
@@ -242,13 +242,13 @@ function createExtras() {
           gem7 = new ExtraItem;
 
     allExtras.push(gem1, gem2, gem3, gem4, gem5, gem6, gem7);
-};
+}
 createExtras();
 
 // Method to remove extra items
 ExtraItem.prototype.remove = function() {
     this.y = 1000;
-}
+};
 
 // New door Key object, outside of createExtras - must be rendered later
 const doorKey = new ExtraItem;
@@ -259,14 +259,14 @@ doorKey.renderDoor = function() {
     ctx.drawImage(Resources.get('images/doorOpenTop.png'), 690, 140);
     ctx.drawImage(Resources.get('images/doorOpenBottom.png'), 690, 210);
     player.enterDoor();
-}
+};
 
 // Function constructor for lives
 const Lives = function(x, y) {
     this.x = x;
     this.y = y;
     this.sprite = 'images/heartFull.png';
-}
+};
 
 // Setting inheritance chain to inherit the render method from Enemy
 Lives.prototype = Object.create(Enemy.prototype);
@@ -279,7 +279,7 @@ function createLives() {
           heart3 = new Lives(580, 25);
 
     allLives.push(heart1, heart2, heart3);
-};
+}
 createLives();
 
 

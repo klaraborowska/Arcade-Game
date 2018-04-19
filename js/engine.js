@@ -80,7 +80,7 @@ var Engine = (function(global) {
             row, col;
         
         // Before drawing, clear existing canvas
-        ctx.clearRect(0,0,canvas.width,canvas.height)
+        ctx.clearRect(0,0,canvas.width,canvas.height);
 
         //Loop through the number of rows and columns and draw the correct image for that portion of the "grid"
         for (row = 0; row < numRows; row++) {
