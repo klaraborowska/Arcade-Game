@@ -41,6 +41,7 @@ var Engine = (function(global) {
         lastTime = Date.now();
         main();
         audioOn = true;
+        document.querySelector("#player1").focus();
     }
 
     // Update position of enemies and player, check if they don't touch each other, update extras and door
