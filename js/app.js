@@ -24,7 +24,7 @@ const Game = function() {
     this.playerStartY = 560;
 };
 
-game = new Game();
+const game = new Game();
 
 // Reset all the settings to the initial state
 Game.prototype.reset = function() {
@@ -101,7 +101,7 @@ const Player = function() {
     this.sprite = 'images/player1.png';
 }; 
 
-const player = new Player;
+const player = new Player();
 
 // Render player method
 Player.prototype.render = function() {
@@ -186,7 +186,7 @@ Player.prototype.enterDoor = function() {
 };
 
 Player.prototype.lose = function() {
-    if (this.live == 0) {
+    if (this.live === 0) {
         if (audioOn){
             new Audio('audio/lose.wav').play();
         }
@@ -233,15 +233,15 @@ const ExtraItem = function () {
 ExtraItem.prototype = Object.create(Enemy.prototype);
 
 // Create extra items and push them to array
-let allExtras = []
+let allExtras = [];
 function createExtras() {
-    const gem1 = new ExtraItem,
-          gem2 = new ExtraItem,
-          gem3 = new ExtraItem,
-          gem4 = new ExtraItem,
-          gem5 = new ExtraItem,
-          gem6 = new ExtraItem,
-          gem7 = new ExtraItem;
+    const gem1 = new ExtraItem(),
+          gem2 = new ExtraItem(),
+          gem3 = new ExtraItem(),
+          gem4 = new ExtraItem(),
+          gem5 = new ExtraItem(),
+          gem6 = new ExtraItem(),
+          gem7 = new ExtraItem();
 
     allExtras.push(gem1, gem2, gem3, gem4, gem5, gem6, gem7);
 }
@@ -253,7 +253,7 @@ ExtraItem.prototype.remove = function() {
 };
 
 // New door Key object, outside of createExtras - must be rendered later
-const doorKey = new ExtraItem;
+const doorKey = new ExtraItem();
 doorKey.sprite = 'images/key.png';
 
 // Method to open and enter the door
@@ -290,8 +290,8 @@ createLives();
 // Check collision between player and enemies 
 function checkCollision() {
     allEnemies.forEach(function(enemy) {
-        yDiff = enemy.y - player.y;
-        xDiff = player.x - enemy.x;
+        let yDiff = enemy.y - player.y;
+        let xDiff = player.x - enemy.x;
         
         if (yDiff > 0 && yDiff < 50) {
 
@@ -335,7 +335,7 @@ DOMstrings.startBtn.addEventListener("submit", function(e) {
 DOMstrings.soundBtn.addEventListener('click', function() {
     DOMstrings.soundOn.classList.toggle("hide");
     DOMstrings.soundOff.classList.toggle("hide");
-    if (audioOn == true) {
+    if (audioOn === true) {
         audioOn = false;
     } else {
         audioOn = true;
