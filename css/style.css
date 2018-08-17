@@ -4,8 +4,9 @@
 }
 
 body {
+    margin: 0;
+    padding: 0;
     text-align: center;
-    padding: 25px;
     background-color: #333;
     color: #333;
     font-size: 16px;
@@ -177,6 +178,7 @@ h1, h2, h3 {
 .sound-btn {
     position: absolute;
     top: 1px;
+    left: 0;
     background-color: #fff;
     border: 1px solid #555;
     cursor: pointer;
@@ -194,7 +196,7 @@ h1, h2, h3 {
     z-index: -10;
     text-align: center;
     color: #fff;
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .footer p {
